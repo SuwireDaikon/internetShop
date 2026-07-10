@@ -41,12 +41,18 @@ public class ProductBasket {
             return; // 'cause we don't want to continue
         }
 
+        int specialCounter = 0;
+
         for (int i = 0; i < size; i++) {
             if (products[i] != null) {
-                System.out.println(products[i].getName() + ": " + products[i].getPrice());
+                System.out.println(products[i].toString());
+                if (products[i].isSpecial()) {
+                    specialCounter++;
+                }
             }
         }
         System.out.println("Total: " + getTotalPrice());
+        System.out.println("Special: " + specialCounter);
     }
 
     public boolean containsProduct(String name) {

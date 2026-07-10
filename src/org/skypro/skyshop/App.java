@@ -1,16 +1,23 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.SimpleProduct;
 
 public class App {
     public static void main(String[] args)  {
         ProductBasket bTest = new ProductBasket();
 
-        Product waffles = new Product("Waffle", 100);
-        Product corn = new Product("Corn", 70);
-        Product lamb = new Product("Lamb", 666);
-        Product beepBeep = new Product("I'm a Sheep.", 1337);
+        Product waffles = new SimpleProduct("Waffle", 100);
+        Product corn = new SimpleProduct("Corn", 70);
+        Product lamb = new SimpleProduct("Lamb", 666);
+        Product beepBeep = new SimpleProduct("I'm a Sheep. Don't mind the dot", 1337);
+        Product swordOfDestruction = new FixPriceProduct("Simple knife (unawakened)");
+        Product discountedPotatoes = new DiscountedProduct("Potato", 90, 20);
+
+        ProductBasket FixAndDiscountAndSimple = new ProductBasket();
 
         bTest.addProduct(waffles);
         bTest.addProduct(corn);
@@ -62,13 +69,29 @@ public class App {
 
         putOutliner();
 
+
+
+
+
         boolean foundNull = bTest.containsProduct(beepBeep.getName());
         if (foundNull) {
             System.out.println("The product was found!");
         } else {
             System.out.println("The product wasn't found, unfortunately...");
         }
+
+        putOutliner();
+        putOutliner();
+        putOutliner();
+
+        FixAndDiscountAndSimple.addProduct(swordOfDestruction);
+        FixAndDiscountAndSimple.addProduct(discountedPotatoes);
+        FixAndDiscountAndSimple.addProduct(beepBeep);
+        FixAndDiscountAndSimple.printBasket();
+
     }
+
+
 
     public static void putOutliner() {
         System.out.println("======================================================================================");
