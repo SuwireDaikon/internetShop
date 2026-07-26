@@ -2,6 +2,8 @@ package org.skypro.skyshop;
 
 import java.util.Arrays;
 
+import org.skypro.skyshop.exceptions.BestResultNotFound;
+
 import org.skypro.skyshop.article.Article;
 import org.skypro.skyshop.interfaces.Searchable;
 import org.skypro.skyshop.utilities.SearchEngine;
@@ -130,6 +132,61 @@ public class App {
         System.out.println(Arrays.toString(t3));
         System.out.println(Arrays.toString(t4));
 
+        putOutliner();
+        putOutliner();
+        putOutliner();
+
+        try {
+            Product illProduct0 = new SimpleProduct("", 5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+        try {
+            Product illProduct01 = new SimpleProduct(null, 5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+        try {
+            Product illProduct10 = new SimpleProduct("     ", 5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+        try {
+            Product illProduct11 = new SimpleProduct("meow", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+        try {
+            Product illProduct100 = new DiscountedProduct("mreow", 5, -1);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+        try {
+            Product illProduct101 = new DiscountedProduct("mreowoww", -995, 5);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+
+        putOutliner();
+
+        SearchEngine exceptionTrierAndFryer = new SearchEngine(15);
+        exceptionTrierAndFryer.add(art1);
+        exceptionTrierAndFryer.add(art2);
+        exceptionTrierAndFryer.add(art3);
+        exceptionTrierAndFryer.add(art4);
+
+        try {
+            Searchable bestMatch = exceptionTrierAndFryer.findBestMatch("www");
+            System.out.println("Best result found: " + bestMatch.getSearchTerm());
+        } catch (BestResultNotFound e) {
+            System.out.println("Error! " + e.getMessage());
+        }
+        try {
+            Searchable bestMatch = exceptionTrierAndFryer.findBestMatch("Bioshock");
+            System.out.println("Best result found: " + bestMatch.getSearchTerm());
+        } catch (BestResultNotFound e) {
+            System.out.println("Error! " + e.getMessage());
+        }
 
     }
 
