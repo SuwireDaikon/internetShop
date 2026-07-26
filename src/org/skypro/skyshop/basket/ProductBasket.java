@@ -2,14 +2,16 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Iterator;
+
 public class ProductBasket {
-    private final Product[] products;
-    private int size;
-    private static final int MAX_SIZE = 5;
-    //Constructor
+    private final List<Product> products;
+
+
     public ProductBasket() {
-        this.products = new Product[MAX_SIZE];
-        this.size = 0;
+        this.products = new LinkedList<>();
     }
 
     public void addProduct(Product product) {
@@ -17,36 +19,31 @@ public class ProductBasket {
             System.out.println("This product does not exist.");
             return;
         }
-        if (size < MAX_SIZE) {
-            products[size] = product;
-            size++;
-        } else {
-            System.out.println("You've filled the basket! Cannot add anymore...");
-        }
+        products.add(product);
     }
 
     public int getTotalPrice() {
         int sum = 0;
-        for (int i = 0; i < size; i++) {
-            if (products[i] != null) {
-                sum += products[i].getPrice();
+        for (Product product : products) {
+            if (product != null) {
+                sum += product.getPrice();
             }
         }
         return sum;
     }
 
     public void printBasket() {
-        if (size == 0) {
+        if (products.isEmpty()) {
             System.out.println("The basket is empty.");
-            return; // 'cause we don't want to continue
+            return;
         }
 
         int specialCounter = 0;
 
-        for (int i = 0; i < size; i++) {
-            if (products[i] != null) {
-                System.out.println(products[i].toString());
-                if (products[i].isSpecial()) {
+        for (Product product : products) {
+            if (product != null) {
+                System.out.println(product.toString());
+                if (product.isSpecial()) {
                     specialCounter++;
                 }
             }
@@ -59,18 +56,34 @@ public class ProductBasket {
         if (name == null || name.isEmpty()) {
             return false;
         }
-        for (int i = 0; i < size; i++) {
-            if (products[i] != null && products[i].getName().equals(name)) {
+        for (Product product : products) {
+            if (product != null && product.getName().equals(name)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void clearBasket() {
-        for (int i = 0; i < size; i++) {
-            products[i] = null;
+    public void clearBasket() { // PrikolistUdalyator
+        products.clear();
+    }
+
+    public List<Product> removeProductsByName(String name) {
+        if (name == null || name.isEmpty()) {
+            return new LinkedList<>();
         }
-        size = 0;
+
+        List<Product> removedProducts = new LinkedList<>();
+        Iterator<Product> iterator = products.iterator();
+
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product != null && name.equals(product.getName())) {
+                removedProducts.add(product);
+                iterator.remove();
+            }
+        }
+
+        return removedProducts;
     }
 }

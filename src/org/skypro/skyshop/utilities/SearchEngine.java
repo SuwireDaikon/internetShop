@@ -2,44 +2,38 @@ package org.skypro.skyshop.utilities;
 import org.skypro.skyshop.interfaces.Searchable;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
-public class SearchEngine {
-    private final Searchable[] searchables;
-    private int size;
+import java.util.LinkedList;
+import java.util.List;
 
-    public SearchEngine(int capacity) {
-        this.searchables = new Searchable[capacity];
-        this.size = 0;
+public class SearchEngine {
+    private final List<Searchable> searchables;
+
+
+    public SearchEngine(int capacity) { // parameter check
+        this.searchables = new LinkedList<>();
     }
 
     public void add(Searchable searchable) {
-        if (size < searchables.length) {
-            searchables[size] = searchable;
-            size++;
-        } else {
-            System.out.println("Search engine is full! Cannot add more items...");
-        }
+        searchables.add(searchable);
     }
 
-    public Searchable[] search(String request) {
+    public List<Searchable> search(String request) {
         if (request == null || request.isEmpty()) {
-            return new Searchable[0];
+            return new LinkedList<>();
         }
 
-        Searchable[] results = new Searchable[5];
-        int resultCount = 0;
+        List<Searchable> results = new LinkedList<>();
+        String requestLower = request.toLowerCase();
 
-        for (int i = 0; i < size; i++) {
-            if (resultCount >= 5) {
-                break;
-            }
-
-            if (searchables[i] != null && searchables[i].getSearchTerm().toLowerCase().contains(request.toLowerCase())) {
-                results[resultCount] = searchables[i];
-                resultCount++;
+        for (Searchable item : searchables) {
+            if (item != null && item.getSearchTerm().toLowerCase().contains(requestLower)) {
+                results.add(item);
             }
         }
+
         return results;
     }
+
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         if (search == null || search.isEmpty()) {
             throw new BestResultNotFound(search);
@@ -47,27 +41,27 @@ public class SearchEngine {
 
         Searchable bestMatch = null;
         int maxCount = 0;
+        String searchLower = search.toLowerCase();
 
-        for (int i = 0; i < size; i++) {
-            if (searchables[i] != null) {
-                String searchTerm = searchables[i].getSearchTerm().toLowerCase();
-                String searchLower = search.toLowerCase();
-
+        for (Searchable item : searchables) {
+            if (item != null) {
+                String searchTerm = item.getSearchTerm().toLowerCase();
                 int count = countOccurrences(searchTerm, searchLower);
 
                 if (count > maxCount) {
                     maxCount = count;
-                    bestMatch = searchables[i];
+                    bestMatch = item;
                 }
             }
         }
 
-        if (bestMatch == null || maxCount == 0) {
+        if (bestMatch == null) {
             throw new BestResultNotFound(search);
         }
 
         return bestMatch;
     }
+
     private int countOccurrences(String text, String search) {
         if (search.isEmpty()) {
             return 0;
