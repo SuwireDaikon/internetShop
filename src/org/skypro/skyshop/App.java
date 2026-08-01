@@ -1,6 +1,7 @@
 package org.skypro.skyshop;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
@@ -33,30 +34,6 @@ public class App {
 
         ProductBasket FixAndDiscountAndSimple = new ProductBasket();
 
-        bTest.addProduct(waffles);
-        bTest.addProduct(corn);
-        bTest.printBasket();
-
-
-        bTest.containsProduct(waffles.getName());
-        bTest.containsProduct(lamb.getName());
-
-        putOutliner();
-
-        ProductBasket bTestOverflow = new ProductBasket();
-        bTestOverflow.addProduct(waffles);
-        bTestOverflow.addProduct(waffles);
-        bTestOverflow.addProduct(waffles);
-        bTestOverflow.addProduct(waffles);
-        bTestOverflow.addProduct(waffles);
-        bTestOverflow.addProduct(waffles);
-        bTestOverflow.printBasket();
-
-        putOutliner();
-
-        int totalPrice = bTestOverflow.getTotalPrice();
-        System.out.println(totalPrice);
-
         putOutliner();
 
         boolean found = bTest.containsProduct(waffles.getName());
@@ -77,16 +54,6 @@ public class App {
 
         putOutliner();
 
-        bTestOverflow.clearBasket();
-        bTestOverflow.printBasket();
-        bTestOverflow.getTotalPrice();
-
-        putOutliner();
-
-
-
-
-
         boolean foundNull = bTest.containsProduct(beepBeep.getName());
         if (foundNull) {
             System.out.println("The product was found!");
@@ -102,39 +69,6 @@ public class App {
         FixAndDiscountAndSimple.addProduct(discountedPotatoes);
         FixAndDiscountAndSimple.addProduct(beepBeep);
         FixAndDiscountAndSimple.printBasket();
-
-        putOutliner();
-        putOutliner();
-        putOutliner();
-
-        SearchEngine searcher = new SearchEngine(100);
-
-        searcher.add(corn);
-        searcher.add(waffles);
-        searcher.add(lamb);
-        searcher.add(beepBeep);
-        searcher.add(swordOfDestruction);
-        searcher.add(discountedPotatoes);
-        searcher.add(strangeProduct);
-
-        searcher.add(art1);
-        searcher.add(art3);
-        searcher.add(art2);
-        searcher.add(art4);
-
-        Searchable[] t1 = searcher.search("meow");
-        Searchable[] t2 = searcher.search("game");
-        Searchable[] t3 = searcher.search("sheep");
-        Searchable[] t4 = searcher.search("minus");
-
-        System.out.println(Arrays.toString(t1));
-        System.out.println(Arrays.toString(t2));
-        System.out.println(Arrays.toString(t3));
-        System.out.println(Arrays.toString(t4));
-
-        putOutliner();
-        putOutliner();
-        putOutliner();
 
         try {
             Product illProduct0 = new SimpleProduct("", 5);
@@ -188,9 +122,60 @@ public class App {
             System.out.println("Error! " + e.getMessage());
         }
 
+        putOutliner();
+        putOutliner();
+        putOutliner();
+        putOutliner();
+        putOutliner();
+        putOutliner();
+
+        ProductBasket listsTest = new ProductBasket();
+        listsTest.addProduct(corn);
+        listsTest.addProduct(lamb);
+        listsTest.addProduct(strangeProduct);
+        listsTest.addProduct(waffles);
+        listsTest.addProduct(waffles);
+        listsTest.addProduct(waffles);
+        listsTest.printBasket();
+
+        List<Product> removed = listsTest.removeProductsByName("Waffle");
+
+        if (removed.isEmpty()) {
+            System.out.println("No products were removed.");
+        } else {
+            for (Product product : removed) {
+                System.out.println("  - " + product.toString());
+            }
+        }
+        listsTest.printBasket();
+        putOutliner();
+        List<Product> removedNonExisting = listsTest.removeProductsByName("bimba");
+
+        if (removedNonExisting.isEmpty()) {
+            System.out.println("List is empty");
+        } else {
+            for (Product product : removedNonExisting) {
+                System.out.println("  - " + product.toString());
+            }
+        }
+        listsTest.printBasket();
+
+        SearchEngine theGreatestSearcher = new SearchEngine(15);
+        theGreatestSearcher.add(art1);
+        theGreatestSearcher.add(art2);
+        theGreatestSearcher.add(art3);
+        theGreatestSearcher.add(art4);
+        List<Searchable> searchResults = theGreatestSearcher.search("sheep");
+        System.out.println("Search results for 'sheep':");
+        if (searchResults.isEmpty()) {
+            System.out.println("No results found.");
+        } else {
+            for (Searchable result : searchResults) {
+                System.out.println("  - " + result.getSearchTerm());
+            }
+        }
+
     }
-
-
 
     public static void putOutliner() {
         System.out.println("======================================================================================");
