@@ -2,6 +2,7 @@ package org.skypro.skyshop;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
@@ -165,16 +166,23 @@ public class App {
         theGreatestSearcher.add(art2);
         theGreatestSearcher.add(art3);
         theGreatestSearcher.add(art4);
-        List<Searchable> searchResults = theGreatestSearcher.search("sheep");
+        Map<String, Searchable> searchResults = theGreatestSearcher.search("sheep");
         System.out.println("Search results for 'sheep':");
         if (searchResults.isEmpty()) {
             System.out.println("No results found.");
         } else {
-            for (Searchable result : searchResults) {
+            for (Searchable result : searchResults.values()) {
                 System.out.println("  - " + result.getSearchTerm());
             }
         }
-
+        Map<String, Searchable> searchResult2 = theGreatestSearcher.search("Genshin");
+        if (searchResult2.isEmpty()) {
+            System.out.println("No results found.");
+        } else {
+            for (Searchable result : searchResult2.values()) {
+                System.out.println("  - " + result.getSearchTerm());
+            }
+        }
     }
 
     public static void putOutliner() {
