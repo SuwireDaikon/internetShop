@@ -31,7 +31,7 @@ public class SearchEngine {
         String requestLower = request.toLowerCase();
 
         for (Searchable item : searchables) {
-            if (item != null && item.getName().toLowerCase().contains(requestLower)) {
+            if (item != null && item.getSearchTerm().toLowerCase().contains(requestLower)) {
                 results.put(item.getName(), item);
             }
         }
@@ -49,7 +49,7 @@ public class SearchEngine {
 
         for (Searchable item : searchables) {
             if (item != null) {
-                String searchTerm = item.getName().toLowerCase();
+                String searchTerm = item.getSearchTerm().toLowerCase();
                 int count = countOccurrences(searchTerm, searchLower);
 
                 if (count > maxCount) {
