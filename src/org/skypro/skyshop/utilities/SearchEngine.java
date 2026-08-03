@@ -4,6 +4,9 @@ import org.skypro.skyshop.exceptions.BestResultNotFound;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class SearchEngine {
     private final List<Searchable> searchables;
@@ -17,20 +20,21 @@ public class SearchEngine {
         searchables.add(searchable);
     }
 
-    public List<Searchable> search(String request) {
+
+
+    public Map<String, Searchable> search(String request) {
+        Map<String, Searchable> results = new TreeMap<>();
         if (request == null || request.isEmpty()) {
-            return new LinkedList<>();
+            return results;
         }
 
-        List<Searchable> results = new LinkedList<>();
         String requestLower = request.toLowerCase();
 
         for (Searchable item : searchables) {
             if (item != null && item.getSearchTerm().toLowerCase().contains(requestLower)) {
-                results.add(item);
+                results.put(item.getName(), item);
             }
         }
-
         return results;
     }
 
