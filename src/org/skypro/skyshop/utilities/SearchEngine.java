@@ -2,28 +2,32 @@ package org.skypro.skyshop.utilities;
 import org.skypro.skyshop.interfaces.Searchable;
 import org.skypro.skyshop.exceptions.BestResultNotFound;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 public class SearchEngine {
-    private final List<Searchable> searchables;
+    private final Set<Searchable> searchables;
 
 
     public SearchEngine(int capacity) { // parameter check
-        this.searchables = new LinkedList<>();
+        this.searchables = new HashSet<>();
     }
 
     public void add(Searchable searchable) {
         searchables.add(searchable);
     }
 
+    public Set<Searchable> search(String request) {
+        Set<Searchable> results = new TreeSet<>((s1, s2) -> {
+            int lengthCompare = Integer.compare(s2.getName().length(), s1.getName().length());
+            if (lengthCompare == 0) {
+                return s1.getName().compareTo(s2.getName());
+            }
+            return lengthCompare;
+        });
 
 
-    public Map<String, Searchable> search(String request) {
-        Map<String, Searchable> results = new TreeMap<>();
         if (request == null || request.isEmpty()) {
             return results;
         }
@@ -32,7 +36,7 @@ public class SearchEngine {
 
         for (Searchable item : searchables) {
             if (item != null && item.getSearchTerm().toLowerCase().contains(requestLower)) {
-                results.put(item.getName(), item);
+                results.add(item);
             }
         }
         return results;
